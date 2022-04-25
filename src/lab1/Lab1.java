@@ -199,18 +199,11 @@ public class Lab1 {
 //            System.out.println(gg.getNazvanie());
 //        }
         // show all students in new group
-        int count = 0;
-        List <Studentyi> stf = s.createQuery("from Studentyi s").list();
-        for (Studentyi st : stf) {
-            if(st.getGruppyi().getNazvanie().equals(newGroupName)){
-                count++;
-            }
-        }
 
         g.setStatusDate(curentDate);
-
-        System.out.println("group " + newGroupName + " contains " + count + " students");
             transaction.commit();
+        System.out.println("group " + newGroupName + " contains " + count_students_in_group(newGroup) + " students");
+
             s.close();
     }
 
