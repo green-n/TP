@@ -9,6 +9,7 @@ import entity.Gruppyi;
 //import entity.items;
 import entity.Studentyi;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -101,12 +102,6 @@ public class Lab1 {
         }
 
 
-//
-//        s.clear();
-//        List <Gruppyi> grs_3 = s.createQuery("from Gruppyi s").list();
-//        for(Gruppyi g : grs_3){
-//            System.out.println("In group "  + g.getNazvanie()+ " " + " amount of students " + count_students_in_group(g));
-//        }
 
 
 
@@ -141,7 +136,8 @@ public class Lab1 {
         SessionFactory sf =  NewHibernateUtil.getSessionFactory();
         Session s = sf.openSession();
         Transaction transaction = s.beginTransaction();
-
+        Date curentDate = new Date();
+        //SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
         List <Studentyi> q = s.createQuery("from Studentyi s").list();
         List <Gruppyi> grs = s.createQuery("from Gruppyi g").list();
         String groupName = g.getNazvanie();
@@ -158,28 +154,27 @@ public class Lab1 {
             isThisGroupExist = false;
             for (Gruppyi gg : grs) {
                 if (gg.getNazvanie().equals(newGroupName)) {
-                    System.out.println("works");
                     isThisGroupExist = true;
                     partialNameInt++;
                 }
             }
         }
-//        System.out.println(newGroupName);
+
         int maxShifr = 0;
         for (Gruppyi gg : grs) {
           maxShifr++;
         }
         maxShifr++;
-        //creating new group
 
-        Gruppyi newGroup = new Gruppyi(newGroupName,new Date(120,10,15),g.getKodPlana(),"created",new Date(120,10,15));
+
+        Gruppyi newGroup = new Gruppyi(newGroupName,new Date(120,10,15),g.getKodPlana(),"created",curentDate);
         newGroup.setShifr(maxShifr);
         s.save(newGroup);
-        //creating new list of students
-        System.out.println(newGroup.getNazvanie());
-        List<Studentyi> newList = new ArrayList<Studentyi>();
+
+
 
         //adding students to new list
+        List<Studentyi> newList = new ArrayList<Studentyi>();
         for (Studentyi st : q){
             if (st.getGruppyi().getNazvanie().equals(g.getNazvanie())){
                 newList.add(st);
@@ -211,6 +206,8 @@ public class Lab1 {
                 count++;
             }
         }
+
+        g.setStatusDate(curentDate);
 
         System.out.println("group " + newGroupName + " contains " + count + " students");
             transaction.commit();
