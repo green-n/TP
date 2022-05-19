@@ -125,11 +125,9 @@ public class Gruppyi  implements java.io.Serializable {
         this.statusDate = statusDate;
     }
 
-@OneToMany(fetch=FetchType.LAZY, mappedBy="gruppyi")
-    public List <Studentyi> getStudentyis() {
-        return this.studentyis;
-    }
-    
+// many to one with Gruppyi
+    @OneToMany(mappedBy="gruppyi")
+
     public void setStudentyis(List <Studentyi> studentyis) {
         this.studentyis = studentyis;
     }

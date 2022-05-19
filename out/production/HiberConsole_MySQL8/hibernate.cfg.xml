@@ -49,5 +49,6 @@ Contributor(s):
     <property name="hibernate.current_session_context_class">thread</property>
     <mapping class="entity.Studentyi"/>
     <mapping class="entity.Gruppyi"/>
+    <mapping class="entity.Subjects"/>
   </session-factory>
 </hibernate-configuration>

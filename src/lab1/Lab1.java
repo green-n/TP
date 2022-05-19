@@ -8,11 +8,13 @@ package lab1;
 import entity.Gruppyi;
 //import entity.items;
 import entity.Studentyi;
+import entity.Subjects;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -31,25 +33,16 @@ public class Lab1 {
         SessionFactory sf =  NewHibernateUtil.getSessionFactory();
         Session s = sf.openSession();
         Transaction transaction = s.beginTransaction();
-   /*   Studentyi d = new Studentyi( nomerZachetki, gruppyi, familiya, imya, otchestvo, gorod,  adres,  tel,  status, statusDate);
-    s.persist(d);
- //   s.save(d);
-*/
-        transaction.commit();
+
         List <Gruppyi> grs = s.createQuery("from Gruppyi s").list();
         List <Studentyi> q = s.createQuery("from Studentyi s").list();
-        //List <items> i = s.createQuery("from items s").list();
-        Transaction t = s.beginTransaction();
-//      for (Studentyi u : q)
-//     {
-////          System.out.print("works");
-//          System.out.print(u.getImya()+"/");
-////          u.setImya(new String());
-//          s.update(u);
-//     }
-//for(items f : i){
-//    System.out.println(f.getName());
-//}
+        //List <Subjects> q1 = s.createQuery("from Subjects s").list();
+
+        //create new subject and add it to database
+        Subjects sub = new Subjects();
+        sub.setName("Математика");
+//        s.save(sub);
+//        t.commit();
 
         int num = 0;
         for (Gruppyi g : grs){
@@ -73,12 +66,11 @@ public class Lab1 {
         }
         count++;
 
-//
+
         for(long i = count;i<count+25;i++){
             Studentyi st = new Studentyi(i,grs.get(0),"Ivanov","NIck","Pavlovich","VItebsk","Moskow ave., 12, 4","+375333645324","enrolled",new Date(120,10,15));
             s.save(st);
         }
-        t.commit();
 
         //for each element of groups
         List <Gruppyi> grs_2 = s.createQuery("from Gruppyi s").list();
@@ -101,16 +93,23 @@ public class Lab1 {
 
         }
 
+        //task 2
+        Subjects sub_0 = new Subjects(1,"math","math",new Date(),new Date(),1);
+        s.save(sub_0);
+        System.out.println(sub_0.getName());
 
 
-
-
+        transaction.commit();
         s.flush();
         s.close();
         sf.close();
 
         // TODO code application logic here
     }
+
+    // task 2 map table between groups and subjects
+
+
 
 
 
@@ -146,20 +145,26 @@ public class Lab1 {
         String secomdPartialName = groupName.substring(groupName.indexOf("-")+1,groupName.length());
         //consverting string to int
         int partialNameInt = Integer.parseInt(secomdPartialName);
+        //creating dinamic array of groups
+//        String[] groupsNames = new String[amount_of_groups-1];
+//        groupsNames[0] = groupName;
         //creating new name for second group
-        boolean isThisGroupExist = true;
-        String newGroupName = "";
-        while (isThisGroupExist) {
-            newGroupName = partialName + "-" + (partialNameInt + 1);
-            isThisGroupExist = false;
-            for (Gruppyi gg : grs) {
-                if (gg.getNazvanie().equals(newGroupName)) {
-                    isThisGroupExist = true;
-                    partialNameInt++;
+//        int counter_of_Names=1;
+//        while(groupsNames[amount_of_groups-1]==null) {
+            boolean isThisGroupExist = true;
+            String newGroupName = "";
+            while (isThisGroupExist) {
+                newGroupName = partialName + "-" + (partialNameInt + 1);
+                isThisGroupExist = false;
+                for (Gruppyi gg : grs) {
+                    if (gg.getNazvanie().equals(newGroupName)) {
+                        isThisGroupExist = true;
+                        partialNameInt++;
+                    }
+//                    if (isThisGroupExist == true) counter_of_Names++;
                 }
             }
-        }
-
+//        }
         int maxShifr = 0;
         for (Gruppyi gg : grs) {
           maxShifr++;
